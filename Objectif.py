@@ -1,11 +1,12 @@
 import File
 import Aleatoire
+import HillClimber
 import MarcheAleatoire
 
 fileInName = "ks_1000.txt";
-fileOutName = "rw.csv"
-tabNbEval = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-repetitions = 100
+fileOutName = "hc.csv"
+tabNbEval = [20, 50, 100]
+repetitions = 20
 
 
 for index in range(0, len(tabNbEval)):
@@ -15,7 +16,8 @@ for index in range(0, len(tabNbEval)):
     for i in range(0, repetitions):
 
         #profitmax = Aleatoire.getProfitMax(fileInName, nbEval)
-        profitmax = MarcheAleatoire.getProfitMax(fileInName, nbEval)
+        #profitmax = MarcheAleatoire.getProfitMax(fileInName, nbEval)
+        profitmax = HillClimber.getProfitMax(fileInName, nbEval)
 
         #Ecriture de la ligne dans le fichier csv
         line = str(nbEval)+";"+str(profitmax)

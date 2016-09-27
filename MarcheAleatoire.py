@@ -1,11 +1,10 @@
 import self
-
 import Booltab
 import Eval
 import File
 
 
-def getProfitMax(fileName, nbEval) :
+def getProfitMax(fileName, nbEval):
 
     self.profitmax = 0
     self.profit = 0
@@ -20,11 +19,13 @@ def getProfitMax(fileName, nbEval) :
     #Recuperation de la penalite
     beta = Eval.beta(self.n, self.p, self.w)
 
+    # On genere aleatoirement un nouveau tableau de booleens
+    self.b = Booltab.init(self.n)
+
     #Pour chaque evaluation
     for i in range(0, nbEval):
 
-        #On genere aleatoirement un nouveau tableau de booleens
-        self.b = Booltab.init(self.n)
+        self.b = Booltab.voisin(self.n, self.b)
 
         #On recupere le profit de ce tableau
         self.profit = Eval.profit(self.n, self.p, self.w, self.b, self.c, beta)
