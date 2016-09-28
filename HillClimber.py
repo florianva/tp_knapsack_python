@@ -1,5 +1,4 @@
 import self
-
 import Booltab
 import Eval
 import File

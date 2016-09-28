@@ -5,7 +5,7 @@ import MarcheAleatoire
 
 fileInName = "ks_1000.txt";
 fileOutName = "hc.csv"
-tabNbEval = [20, 50, 100]
+tabNbEval = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
 repetitions = 20
 
 

@@ -1,8 +1,6 @@
-
-#Calcul du profit selon une possibilite d'objets a emporter
 import self
 
-
+#Calcul du profit selon une possibilite d'objets a emporter
 def profit(n, p, w, b, c, beta):
     self.weight = 0
     self.z = 0
