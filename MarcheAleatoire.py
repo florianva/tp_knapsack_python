@@ -11,24 +11,24 @@ def getProfitMax(fileName, nbEval):
 
     #Recuperation des donnees du fichier
     f = File.Read(fileName)
-    self.n = f.getN()
-    self.p = f.getP()
-    self.w = f.getW()
-    self.c = f.getC()
+    n = f.getN()
+    p = f.getP()
+    w = f.getW()
+    c = f.getC()
 
     #Recuperation de la penalite
-    beta = Eval.beta(self.n, self.p, self.w)
+    self.beta = Eval.beta(n, p, w)
 
     # On genere aleatoirement un nouveau tableau de booleens
-    self.b = Booltab.init(self.n)
+    b = Booltab.init(int(n))
 
     #Pour chaque evaluation
     for i in range(0, nbEval):
 
-        self.b = Booltab.voisin(self.n, self.b)
+        b = Booltab.voisin(n, b)
 
         #On recupere le profit de ce tableau
-        self.profit = Eval.profit(self.n, self.p, self.w, self.b, self.c, beta)
+        self.profit = Eval.profit(n, p, w, b, c, self.beta)
 
         #Si le profit est le plus important sur le nombre d evaluations realises, cela devient le profit maximum
         if self.profit > self.profitmax:

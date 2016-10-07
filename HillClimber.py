@@ -2,12 +2,11 @@ import self
 import Booltab
 import Eval
 import File
+import Hamming
 
 
 def getProfitMax(fileName, nbEval):
 
-    self.profitmax = 0
-    self.profit = 0
 
     #Recuperation des donnees du fichier
     f = File.Read(fileName)
@@ -19,19 +18,24 @@ def getProfitMax(fileName, nbEval):
     #Recuperation de la penalite
     beta = Eval.beta(self.n, self.p, self.w)
 
-    #On genere aleatoirement un nouveau tableau de booleens
-    self.b = Booltab.init(self.n)
+    # On genere aleatoirement un nouveau tableau de booleens
+    self.bmaxglobal = Booltab.init(int(self.n))
 
-    #Pour chaque evaluation
-    for i in range(0, nbEval):
-
-        self.b = Booltab.hillClimber(self.n, self.b, self.p, self.w, self.c, beta)
+    for i in range(0,nbEval):
 
         #On recupere le profit de ce tableau
-        self.profit = Eval.profit(self.n, self.p, self.w, self.b, self.c, beta)
+        self.profitmaxglobal = Eval.profit(self.n, self.p, self.w, self.bmaxglobal, self.c, beta)
 
-        #Si le profit est le plus important sur le nombre d evaluations realises, cela devient le profit maximum
-        if self.profit > self.profitmax:
-            self.profitmax = self.profit
+        #On recupere le tableau dont le profit est le maximum avec la distance de Hamming
+        self.bmaxlocal = Booltab.hillClimber(self.n,self.bmaxglobal,self.p,self.w,self.c,beta,self.profitmaxglobal)
 
-    return self.profitmax
+        #On calcule le profit pour ce tableau
+        self.profitmaxlocal = Eval.profit(self.n, self.p, self.w, self.bmaxlocal, self.c, beta)
+
+        if self.profitmaxlocal > self.profitmaxglobal:
+            self.profitmaxglobal = self.profitmaxlocal
+            self.bmaxglobal = self.bmaxlocal
+        else:
+            return self.profitmaxglobal
+
+    return self.profitmaxglobal

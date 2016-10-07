@@ -5,10 +5,10 @@ import MarcheAleatoire
 
 fileInName = "ks_1000.txt";
 fileOutName = "hc.csv"
-tabNbEval = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-repetitions = 20
+tabNbEval = [20, 50, 100]
+repetitions = 30
 
-
+#profitmax = HillClimber.getProfitMax(fileInName, 1)
 for index in range(0, len(tabNbEval)):
     nbEval = tabNbEval[index]
 

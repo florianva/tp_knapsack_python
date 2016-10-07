@@ -5,6 +5,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="set.__getitem__" />
+          <option value="Boolean.bool_" />
         </list>
       </option>
     </inspection_tool>
