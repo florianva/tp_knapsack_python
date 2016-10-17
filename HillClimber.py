@@ -1,41 +1,120 @@
-import self
-import Booltab
-import Eval
-import File
-import Hamming
+
+from numpy.core.tests.test_mem_overlap import xrange
+import numpy as np
 
 
-def getProfitMax(fileName, nbEval):
+class Bestimprovement :
+
+    def __init__(self, ks, nbEval):
+        self.ks = ks
+        self.nbEval = nbEval
+        for i in xrange(self.ks.n):
+            print(i)
+            self.tab_indice = i
 
 
-    #Recuperation des donnees du fichier
-    f = File.Read(fileName)
-    self.n = f.getN()
-    self.p = f.getP()
-    self.w = f.getW()
-    self.c = f.getC()
 
-    #Recuperation de la penalite
-    beta = Eval.beta(self.n, self.p, self.w)
 
-    # On genere aleatoirement un nouveau tableau de booleens
-    self.bmaxglobal = Booltab.init(int(self.n))
 
-    for i in range(0,nbEval):
+    def getProfitMax(self):
 
-        #On recupere le profit de ce tableau
-        self.profitmaxglobal = Eval.profit(self.n, self.p, self.w, self.bmaxglobal, self.c, beta)
 
-        #On recupere le tableau dont le profit est le maximum avec la distance de Hamming
-        self.bmaxlocal = Booltab.hillClimber(self.n,self.bmaxglobal,self.p,self.w,self.c,beta,self.profitmaxglobal)
 
-        #On calcule le profit pour ce tableau
-        self.profitmaxlocal = Eval.profit(self.n, self.p, self.w, self.bmaxlocal, self.c, beta)
+        profitmaxglobal = 0
 
-        if self.profitmaxlocal > self.profitmaxglobal:
-            self.profitmaxglobal = self.profitmaxlocal
-            self.bmaxglobal = self.bmaxlocal
-        else:
-            return self.profitmaxglobal
 
-    return self.profitmaxglobal
+        bmaxglobal = np.random.randint(2, size=self.ks.n)
+
+
+
+        for i in xrange(self.nbEval):
+
+            #On recupere le profit de ce tableau
+            profitmaxglobal = self.ks.eval(bmaxglobal)
+
+
+
+            indice, profitmaxlocal = self.Hamming2(bmaxglobal)
+            print(profitmaxlocal)
+
+
+            if profitmaxlocal > profitmaxglobal:
+                profitmaxglobal = profitmaxlocal
+
+                if bmaxglobal[indice] == 1:
+                    bmaxglobal[indice] = 0
+                else:
+                    bmaxglobal[indice] = 1
+                #bmaxglobal[indice] = 1 - bmaxglobal[indice]
+
+            else:
+                return profitmaxglobal
+        #print(profitmaxglobal)
+
+        return profitmaxglobal
+
+
+
+    def Hamming(self,blocal):
+        profitmaxlocal = 0
+
+        for i in xrange(len(blocal)):
+
+            #blocal[i] == 1 - blocal[i]
+            if blocal[i] == 1:
+                blocal[i] = 0
+            else:
+                blocal[i] = 1
+
+
+            profitlocal = self.ks.eval(blocal)
+            #print(profitlocal)
+
+            if profitlocal > profitmaxlocal:
+                indice = i;
+                #print(i)
+                profitmaxlocal = profitlocal
+
+
+            #blocal[i] == 1 - blocal[i]
+            if blocal[i] == 1:
+                blocal[i] = 0
+            else:
+                blocal[i] = 1
+
+        return indice, profitmaxlocal
+
+    def Hamming2(self, blocal):
+        profitmaxlocal = -1
+        profitlocal = self.ks.eval(blocal)
+        j = 0
+        i = 0
+
+        while(profitlocal <= profitmaxlocal & j < self.ks.n):
+
+            i = self.RandomIndice(j)
+
+            # blocal[i] == 1 - blocal[i]
+            if blocal[i] == 1:
+                blocal[i] = 0
+            else:
+                blocal[i] = 1
+
+            profitlocal = self.ks.eval(blocal)
+            # print(profitlocal)
+
+
+            if blocal[i] == 1:
+                blocal[i] = 0
+            else:
+                blocal[i] = 1
+
+            j += 1
+        return i, profitmaxlocal
+
+    def RandomIndice(self, j):
+        r = np.random.randint(self.ks.n - j)
+        i = self.tab_indice[r]
+        self.tab_indice[r] = self.tab_indice[self.ks.n-j-1]
+        self.tab_indice[self.ks.n - j - 1] = i
+        return i

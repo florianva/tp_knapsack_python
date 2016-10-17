@@ -1,41 +1,38 @@
+class Knapsack:
 
-import self
+    def __init__(self, filename):
+        with open(filename, "r") as f:
+            self.n = int(f.readline())
+            s = f.readline().split(' ')
+            self.profits = [ int(i) for i in s ]
+            s = f.readline().split(' ')
+            self.weights = [ int(i) for i in s ]
+            self.C = int(f.readline())
+            self.beta = 0
+            for (p,w) in zip(self.profits, self.weights):
+                if w > 0:
+                    if float(p)/float(w) > self.beta:
+                        self.beta = float(p)/float(w)
 
-#Calcul du profit selon une possibilite d'objets a emporter
-def profit(n, z, w, b, c, beta):
-    self.weight = 0
-    self.z = 0
-    self.beta = beta
+    def eval(self, x):
+        z = 0
+        w = 0
+        for i in range(self.n):
+            if x[i] == 1:
+                z += self.profits[i]
+                w += self.weights[i]
+        if w <= self.C:
+            return z
+        else:
+            return z - self.beta * (w - self.C)
 
-    #Pour chaque objet dans le sac
-    for i in range(0, int(n)):
-        #Calcul du poids et du profit
-        #self.weight = float(float(self.weight)+(self.b[i]*float(self.w[i])))
-        self.weight = float(self.weight) +(float(w[i]) * float(b[i]))
-        #self.z = float(float(self.z)+float(self.p[i]))
-        self.z = self.z + (float(z[i]) * float(b[i]))
-
-    #Si le poids depasse la contrainte
-    if float(self.weight) > float(c):
-        self.z = float(self.z) - (float(beta) * (float(self.weight)-float(c)))
-
-    return float(self.z)
-
-#Calcul de la penalite en fonction des profits et des poids des objets
-
-def beta(n,p,w):
-
-    self.r = 0
-    self.m = 0
-
-
-    #On recupere le p/w le plus eleve
-    for i in range(0, int(n)):
-        self.r = float(float(p[i]) / float(w[i]))
-        #print(self.r)
-        if self.r > self.m:
-            self.m = self.r
-
-
-    return self.m
-
+    def __str__(self):
+        s = str(self.n) + "\n"
+        for p in self.profits:
+            s += str(p) + " "
+        s += "\n"
+        for w in self.weights:
+            s += str(w) + " "
+        s += "\n" + str(self.C)
+        s += "\n" + str(self.beta)
+        return(s)

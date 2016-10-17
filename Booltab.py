@@ -1,5 +1,6 @@
 import random
-import self
+from numpy.core.tests.test_mem_overlap import xrange
+
 import Eval
 import numpy as np
 
@@ -10,62 +11,38 @@ def init(n):
 
 def voisin(n, b):
 
-    self.b = b
+    b = b
     i = random.randint(0, int(n)-1)
     b[i] = np.invert(b[i])
     return b
 
-def hillClimber(n, bmaxglobal, p, w, c, beta, profitmaxglobal):
+def hillClimber(ks, blocal):
 
-    self.n = n
-    self.p = p
-    self.w = w
-    self.c = c
-    self.beta = beta
-    self.profitmaxlocal = 0
-    self.profitmaxglobal = profitmaxglobal
-    self.bmaxglobal = bmaxglobal
-    self.i = -1
-    self.blocal = np.copy(bmaxglobal)
+    profitmaxlocal = 0
 
-    for i in range(0, len(self.blocal)):
+    for i in xrange(len(blocal)):
 
-        #self.blocal[i] = np.invert(self.blocal[i])
-        if self.blocal[i] == 1:
-            self.blocal[i] = 0
+        #blocal[i] = np.invert(blocal[i])
+        if blocal[i] == 1:
+            blocal[i] = 0
         else:
-            self.blocal[i] = 1
+            blocal[i] = 1
 
-        self.profitlocal = Eval.profit(self.n, self.p, self.w, self.blocal, self.c, beta)
+        profitlocal = ks.eval(blocal)
 
-        if self.profitlocal > self.profitmaxlocal:
-            self.bmaxlocal = np.copy(self.blocal)
-            self.profitmaxlocal = self.profitlocal
+        if profitlocal > profitmaxlocal:
+            #bmaxlocal = np.copy(blocal)
+            indice = i;
+            profitmaxlocal = profitlocal
 
-        #self.blocal[i] = np.invert(self.blocal[i])
+        #blocal[i] = np.invert(blocal[i])
+        #print(profitmaxlocal)
 
-        if self.blocal[i] == 1:
-            self.blocal[i] = 0
+        if blocal[i] == 1:
+            blocal[i] = 0
         else:
-            self.blocal[i] = 1
+            blocal[i] = 1
 
-    return self.bmaxlocal
-
-
-    #for i in range(0,int(self.n)):
-    #while ((self.profit < self.profitmax) & (self.i < self.n)):
-     #   self.i = self.i + 1
-      #  self.b[self.i] = np.invert(self.b[self.i])
-       # self.profit = Eval.profit(self.n, self.p, self.w, self.b, self.c, beta)
-
-        # Si le profit est le plus important sur le nombre d evaluations realises, cela devient le profit maximum
-#        if self.profit > self.profitmax:
- #          self.profitmax = self.profit
-  #          self.bmax = self.b
-
-
-   # self.b[self.i] = np.invert(self.b[self.i])
-
-
-#    return self.bmax
+    #return bmaxlocal
+    return indice, profitmaxlocal
 

@@ -1,25 +1,53 @@
+from numpy.core.tests.test_mem_overlap import xrange
+
 import File
+import time
 import Aleatoire
 import HillClimber
 import MarcheAleatoire
+from Eval import Knapsack
 
-fileInName = "ks_1000.txt";
-fileOutName = "hc.csv"
-tabNbEval = [20, 50, 100]
-repetitions = 30
+if __name__ == '__main__':
 
-#profitmax = HillClimber.getProfitMax(fileInName, 1)
-for index in range(0, len(tabNbEval)):
-    nbEval = tabNbEval[index]
+    fileInName = "ks_1000.txt"
+    ks = Knapsack(fileInName)
 
-    #Nombre de fois a executer le programme
-    for i in range(0, repetitions):
+#    x = [ 0, 1, 0, 0, 1]
+#    print x, ks.eval(x)
 
-        #profitmax = Aleatoire.getProfitMax(fileInName, nbEval)
-        #profitmax = MarcheAleatoire.getProfitMax(fileInName, nbEval)
-        profitmax = HillClimber.getProfitMax(fileInName, nbEval)
+#    x = [ 0, 0, 1, 1, 0]
+#    print x, ks.eval(x)
 
-        #Ecriture de la ligne dans le fichier csv
-        line = str(nbEval)+";"+str(profitmax)
-        File.Write(fileOutName, line)
+
+
+    fileOutName = "First.csv"
+    tabNbEval = [10,20,50,100,200,500,1000]
+    repetitions = 1
+
+
+
+    #profitmax = HillClimber.getProfitMax(fileInName, 1)
+    for index in xrange(len(tabNbEval)):
+        nbEval = tabNbEval[index]
+        hc = HillClimber.Bestimprovement(ks, nbEval)
+        #t1 = int(round(time.time() * 1000))
+        t1 = time.time()
+
+        #Nombre de fois a executer le programme
+        for i in xrange(repetitions):
+
+            #profitmax = Aleatoire.getProfitMax(fileInName, nbEval)
+            #profitmax = MarcheAleatoire.getProfitMax(fileInName, nbEval)
+            profitmax = hc.getProfitMax()
+            #t2 = int(round(time.time() * 1000))
+            t2 = time.time()
+            tt = t2 - t1
+            print("write : ")
+            print(profitmax)
+            print("temps (s) :")
+            print(t2-t1)
+            #Ecriture de la ligne dans le fichier csv
+            #line = str(nbEval)+";"+str(profitmax)
+            line = str(nbEval)+";"+str(tt)
+            File.Write(fileOutName, line)
 
