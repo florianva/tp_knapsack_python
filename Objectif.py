@@ -1,7 +1,6 @@
-from numpy.core.tests.test_mem_overlap import xrange
+import time
 
 import File
-import time
 import Aleatoire
 import HillClimber
 import MarcheAleatoire
@@ -9,7 +8,7 @@ from Eval import Knapsack
 
 if __name__ == '__main__':
 
-    fileInName = "ks_1000.txt"
+    fileInName = "ks_2000.txt"
     ks = Knapsack(fileInName)
 
 #    x = [ 0, 1, 0, 0, 1]
@@ -20,7 +19,7 @@ if __name__ == '__main__':
 
 
 
-    fileOutName = "First.csv"
+    fileOutName = "time_best_2000.csv"
     tabNbEval = [10,20,50,100,200,500,1000]
     repetitions = 1
 

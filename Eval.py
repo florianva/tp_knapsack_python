@@ -24,7 +24,8 @@ class Knapsack:
         if w <= self.C:
             return z
         else:
-            return z - self.beta * (w - self.C)
+            t = z - self.beta * (w - self.C)
+            return t
 
     def __str__(self):
         s = str(self.n) + "\n"

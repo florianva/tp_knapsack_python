@@ -1,5 +1,4 @@
 import random
-from numpy.core.tests.test_mem_overlap import xrange
 
 import Eval
 import numpy as np

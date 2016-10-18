@@ -1,5 +1,5 @@
 
-from numpy.core.tests.test_mem_overlap import xrange
+
 import numpy as np
 
 
@@ -9,7 +9,6 @@ class Bestimprovement :
         self.ks = ks
         self.nbEval = nbEval
         for i in xrange(self.ks.n):
-            print(i)
             self.tab_indice = i
 
 
@@ -24,31 +23,34 @@ class Bestimprovement :
 
 
         bmaxglobal = np.random.randint(2, size=self.ks.n)
+        print(bmaxglobal)
 
 
 
         for i in xrange(self.nbEval):
 
             #On recupere le profit de ce tableau
-            profitmaxglobal = self.ks.eval(bmaxglobal)
+            p = self.ks.eval(bmaxglobal)
+            if p > 0 :
+                profitmaxglobal = p
 
 
 
-            indice, profitmaxlocal = self.Hamming2(bmaxglobal)
+            ind, profitmaxlocal = self.Hamming(bmaxglobal)
             print(profitmaxlocal)
 
+            if ind > -1 :
+                if profitmaxlocal > profitmaxglobal:
+                    profitmaxglobal = profitmaxlocal
 
-            if profitmaxlocal > profitmaxglobal:
-                profitmaxglobal = profitmaxlocal
+                    if bmaxglobal[ind] == 1:
+                        bmaxglobal[ind] = 0
+                    else:
+                        bmaxglobal[ind] = 1
+                    #bmaxglobal[indice] = 1 - bmaxglobal[indice]
 
-                if bmaxglobal[indice] == 1:
-                    bmaxglobal[indice] = 0
                 else:
-                    bmaxglobal[indice] = 1
-                #bmaxglobal[indice] = 1 - bmaxglobal[indice]
-
-            else:
-                return profitmaxglobal
+                    return profitmaxglobal
         #print(profitmaxglobal)
 
         return profitmaxglobal
@@ -71,9 +73,11 @@ class Bestimprovement :
             #print(profitlocal)
 
             if profitlocal > profitmaxlocal:
-                indice = i;
+                indice = i
                 #print(i)
                 profitmaxlocal = profitlocal
+            else:
+                indice = -1
 
 
             #blocal[i] == 1 - blocal[i]
