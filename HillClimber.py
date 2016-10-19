@@ -8,8 +8,7 @@ class Bestimprovement :
     def __init__(self, ks, nbEval):
         self.ks = ks
         self.nbEval = nbEval
-        for i in xrange(self.ks.n):
-            self.tab_indice = i
+        self.tab_indice = [i for i in range(self.ks.n)]
 
 
 
@@ -23,7 +22,6 @@ class Bestimprovement :
 
 
         bmaxglobal = np.random.randint(2, size=self.ks.n)
-        print(bmaxglobal)
 
 
 
@@ -36,7 +34,7 @@ class Bestimprovement :
 
 
 
-            ind, profitmaxlocal = self.Hamming(bmaxglobal)
+            ind, profitmaxlocal = self.Hamming2(bmaxglobal)
             print(profitmaxlocal)
 
             if ind > -1 :
@@ -89,32 +87,42 @@ class Bestimprovement :
         return indice, profitmaxlocal
 
     def Hamming2(self, blocal):
-        profitmaxlocal = -1
-        profitlocal = self.ks.eval(blocal)
+        profitmaxlocal = 0
+        profitlocal = -1
         j = 0
         i = 0
+        #print("profitmaxlocal : ")
+        #print(profitmaxlocal)
+        for i in xrange(len(blocal)):
+        #while(profitlocal <= profitmaxlocal & j < self.ks.n):
 
-        while(profitlocal <= profitmaxlocal & j < self.ks.n):
-
-            i = self.RandomIndice(j)
+            ind = self.RandomIndice(j)
 
             # blocal[i] == 1 - blocal[i]
-            if blocal[i] == 1:
-                blocal[i] = 0
+            if blocal[ind] == 1:
+                blocal[ind] = 0
             else:
-                blocal[i] = 1
+                blocal[ind] = 1
 
             profitlocal = self.ks.eval(blocal)
-            # print(profitlocal)
+
+            #print("profitlocal : ")
+            #print(profitlocal)
+
+            if profitlocal > profitmaxlocal:
+                indice = ind
+                # print(i)
+                profitmaxlocal = profitlocal
+               # print(profitmaxlocal)
 
 
-            if blocal[i] == 1:
-                blocal[i] = 0
+            if blocal[ind] == 1:
+                blocal[ind] = 0
             else:
-                blocal[i] = 1
+                blocal[ind] = 1
 
             j += 1
-        return i, profitmaxlocal
+        return indice, profitmaxlocal
 
     def RandomIndice(self, j):
         r = np.random.randint(self.ks.n - j)

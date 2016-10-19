@@ -8,7 +8,7 @@ from Eval import Knapsack
 
 if __name__ == '__main__':
 
-    fileInName = "ks_2000.txt"
+    fileInName = "ks_1000.txt"
     ks = Knapsack(fileInName)
 
 #    x = [ 0, 1, 0, 0, 1]
@@ -19,9 +19,9 @@ if __name__ == '__main__':
 
 
 
-    fileOutName = "time_best_2000.csv"
+    fileOutName = "HIBI.csv"
     tabNbEval = [10,20,50,100,200,500,1000]
-    repetitions = 1
+    repetitions = 10
 
 
 
@@ -43,10 +43,10 @@ if __name__ == '__main__':
             tt = t2 - t1
             print("write : ")
             print(profitmax)
-            print("temps (s) :")
-            print(t2-t1)
+           # print("temps (s) :")
+            #print(t2-t1)
             #Ecriture de la ligne dans le fichier csv
-            #line = str(nbEval)+";"+str(profitmax)
-            line = str(nbEval)+";"+str(tt)
+            line = str(nbEval)+";"+str(profitmax)
+            #line = str(nbEval)+";"+str(tt)
             File.Write(fileOutName, line)
 
